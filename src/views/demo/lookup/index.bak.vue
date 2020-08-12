@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import VTable from "@/components/Table/Table";
+import VTable from "@/components/Table/VTable";
 import FormFilter from "@/components/FormFilter";
 import Btn from "@/components/Btn";
 

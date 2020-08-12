@@ -1,12 +1,12 @@
 <template>
   <div>
-    <radio v-model="value" :dataSource="dataSource" @change="valChange"></radio>
-    <radio type="button" v-model="value" :dataSource="dataSource" @change="valChange"></radio>
+    <v-radio v-model="value" :dataSource="dataSource" @change="valChange"></v-radio>
+    <v-radio type="button" v-model="value" :dataSource="dataSource" @change="valChange"></v-radio>
     <br>
     父组件：{{value}}
     <hr>
-    <check-box v-model="boxVal" :dataSource="dataSource"></check-box>
-    <check-box v-model="boxVal" :dataSource="dataSource" type="button"></check-box>
+    <v-check-box v-model="boxVal" :dataSource="dataSource"></v-check-box>
+    <v-check-box v-model="boxVal" :dataSource="dataSource" type="button"></v-check-box>
     <br>
     父组件：{{boxVal}}
     <hr>
@@ -21,16 +21,16 @@
 
 
 <script>
-import Radio from "@/components/FormMark/Radio";
-import CheckBox from "@/components/FormMark/CheckBox";
-import VSelect from "@/components/FormMark/Select";
+import VRadio from "@/components/FormMark/VRadio";
+import VCheckBox from "@/components/FormMark/VCheckBox";
+import VSelect from "@/components/FormMark/VSelect";
 
 
 export default {
   name: "FormDemo",
   components: {
-    Radio,
-    CheckBox,
+    VRadio,
+    VCheckBox,
     VSelect
   },
   props: {},

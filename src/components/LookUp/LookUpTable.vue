@@ -20,7 +20,7 @@
       </template>
       <form-filter :advance="false" :formItems="formItems" @on-submit="submit"></form-filter>
       <data-table
-        :offset="160"
+        :offset="fullscreen?86:160"
         :columnType="selection=='single'?'index':'selection'"
         ref="demoTable"
         :columns="columns"
@@ -104,7 +104,7 @@ export default {
     // 显示
     show() {
       if (!this.disabled) {
-        this.dialogTableVisible = !this.dialogTableVisible;
+        this.dialogTableVisible = true;
       }
     },
     // 隐藏

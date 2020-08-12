@@ -16,7 +16,7 @@
  * - dataSource:[] 数据字典
  */
 export default {
-  name: "CheckBox",
+  name: "VCheckBox",
   props: {
     type: {
       type: String,

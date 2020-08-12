@@ -1,8 +1,8 @@
 import DataTable from "./DataTable.vue";
-import Table from './Table.vue';
+import VTable from './VTable.vue';
 
 export {
   DataTable
 };
 
-export default Table;
+export default VTable;

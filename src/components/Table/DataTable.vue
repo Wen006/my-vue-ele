@@ -17,7 +17,7 @@
         size="mini"
       >清除</el-tag>
     </el-alert>
-    <base-table
+    <v-table
       ref="baseTableRef"
       v-bind="baseTableProps"
       :data="list"
@@ -33,19 +33,19 @@
       @currentChange="currentChange"
       @tableCurrentChange="tableCurrentChange"
       v-on="$listeners"
-    ></base-table>
+    ></v-table>
   </div>
 </template>
 
 <script>
-import BaseTable from "./Table";
+import VTable from "./VTable";
 import { isPromise, isFunction } from "../util";
 import { isPrimitive } from "util";
 
 export default {
   name: "DataTable",
   components: {
-    BaseTable
+    VTable
   },
   data() {
     return {
@@ -63,26 +63,11 @@ export default {
       default: []
     }, // 列表头
     columnType: [String, Array], // 列类型[序号、复选框、展开]
-    // select: {
-    //   type: Function,
-    //   default: () => {}
-    // }, // 单个 复选框 事件
-    // selectAll: {
-    //   type: Function,
-    //   default: () => {}
-    // }, // 全选 复选框 事件
-    // sortChange: {
-    //   type: Function,
-    //   default: () => {}
-    // }, // 服务端排序；当 sortable：custom
     pageSizes: {
       type: Array,
-      default: () => [10, 40, 500, 1000]
-    },
-    pagination: Boolean, // 分页开关
-    fetchData: Promise | Function, // 请求分页方法
-    showSummary: Boolean, // 表尾合计行开关
-    summaryMethod: Function // 表尾合计行方法
+      default: () => [50, 100, 500, 1000]
+    }, // 分页显示范围
+    fetchData: Promise | Function // 请求分页方法
   },
   computed: {
     baseTableProps() {
@@ -134,31 +119,35 @@ export default {
     },
     /* 当前页改变事件 or 单选择 */
     currentChange(val) {
-      if(typeof val == 'number'){ //当前页改变事件
+      if (typeof val == "number") {
+        //当前页改变事件
         this.pageNo = val;
         this.fetchRemoteData({ pageSize: this.pageSize, pageNo: this.pageNo });
       }
     },
-      /* 当前列表单选 */
-    tableCurrentChange(newRecored,oldRecord){
+    /* 当前列表单选 */
+    tableCurrentChange(newRecored, oldRecord) {
       this.selectRows = [newRecored];
-      this.$emit("selectionChange",this.selectRows);
+      this.$emit("selectionChange", this.selectRows);
     },
-    // 
+    /** 选择回调 */
     handleSelectionChange(selects) {
       this.selectRows = selects;
-      this.$emit("selectionChange",this.selectRows);
+      this.$emit("selectionChange", this.selectRows);
     },
+    /** 清除选择 */
     clearSelect() {
-      this.selectRows = []
+      this.selectRows = [];
       this.$refs.baseTableRef.clearSelection();
-    }, 
-    // 
-    getSelectRow(){
+    },
+    /** 获取选择列表 */
+    getSelectRow() {
       return this.selectRows;
     },
+    /** 提交查询 默认从第一页查询 */
     submit(queryParam = {}) {
-      this.pageNo = 1;
+      this.pageNo = queryParam.pageNo || 1;
+      this.pageSize = queryParam.pageSize || this.pageSize;
       this.fetchRemoteData({
         pageSize: this.pageSize,
         pageNo: this.pageNo,
@@ -170,16 +159,14 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .table-panel {
-  .el-form-item{
+  .el-form-item {
     margin-bottom: 5px;
   }
   .table-el-alert {
-    margin-bottom: 5px; 
-    .clear-tag{
+    margin-bottom: 5px;
+    .clear-tag {
       cursor: pointer;
     }
-  } 
-  
-} 
-  
+  }
+}
 </style>

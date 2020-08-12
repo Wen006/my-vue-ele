@@ -1,37 +1,6 @@
 /**
-*                                         ,s555SB@@&
-*                                      :9H####@@@@@Xi
-*                                     1@@@@@@@@@@@@@@8
-*                                   ,8@@@@@@@@@B@@@@@@8
-*                                  :B@@@@X3hi8Bs;B@@@@@Ah,
-*             ,8i                  r@@@B:     1S ,M@@@@@@#8;
-*            1AB35.i:               X@@8 .   SGhr ,A@@@@@@@@S
-*            1@h31MX8                18Hhh3i .i3r ,A@@@@@@@@@5
-*            ;@&i,58r5                 rGSS:     :B@@@@@@@@@@A
-*             1#i  . 9i                 hX.  .: .5@@@@@@@@@@@1
-*              sG1,  ,G53s.              9#Xi;hS5 3B@@@@@@@B1
-*               .h8h.,A@@@MXSs,           #@H1:    3ssSSX@1
-*               s ,@@@@@@@@@@@@Xhi,       r#@@X1s9M8    .GA981
-*               ,. rS8H#@@@@@@@@@@#HG51;.  .h31i;9@r    .8@@@@BS;i;
-*                .19AXXXAB@@@@@@@@@@@@@@#MHXG893hrX#XGGXM@@@@@@@@@@MS
-*                s@@MM@@@hsX#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&,
-*              :GB@#3G@@Brs ,1GM@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@B,
-*            .hM@@@#@@#MX 51  r;iSGAM@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@8
-*          :3B@@@@@@@@@@@&9@h :Gs   .;sSXH@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@:
-*      s&HA#@@@@@@@@@@@@@@M89A;.8S.       ,r3@@@@@@@@@@@@@@@@@@@@@@@@@@@r
-*   ,13B@@@@@@@@@@@@@@@@@@@5 5B3 ;.         ;@@@@@@@@@@@@@@@@@@@@@@@@@@@i
-*  5#@@#&@@@@@@@@@@@@@@@@@@9  .39:          ;@@@@@@@@@@@@@@@@@@@@@@@@@@@;
-*  9@@@X:MM@@@@@@@@@@@@@@@#;    ;31.         H@@@@@@@@@@@@@@@@@@@@@@@@@@:
-*   SH#@B9.rM@@@@@@@@@@@@@B       :.         3@@@@@@@@@@@@@@@@@@@@@@@@@@5
-*     ,:.   9@@@@@@@@@@@#HB5                 .M@@@@@@@@@@@@@@@@@@@@@@@@@B
-*           ,ssirhSM@&1;i19911i,.             s@@@@@@@@@@@@@@@@@@@@@@@@@@S
-*              ,,,rHAri1h1rh&@#353Sh:          8@@@@@@@@@@@@@@@@@@@@@@@@@#:
-*            .A3hH@#5S553&@@#h   i:i9S          #@@@@@@@@@@@@@@@@@@@@@@@@@A.
-*
-*
-*    又看源码，看你妹妹呀！
-*/
-<!--qiu.bl-->
+ *  通用v-table
+ */
 <style rel="stylesheet/scss" lang="scss" scoped>
   .tab-div{
     display: block;
@@ -64,18 +33,14 @@
       :height="tab_height"
       v-bind="tablePropertites"
       style="width: 100%;"
-      @select="select"
-      @select-all="selectAll"
-      @sort-change="sortChange"
       @current-change="tableCurrentChange"
       v-on="$listeners"
     >
       <template v-for="(tp, key) in columnTypes">
         <el-table-column :type="tp" :key="key"/>
       </template>
-      
       <template v-for="col in renderColumns">
-        <el-table-column v-if="col.columnsProps.type !== 'text' " v-bind="getColBind(col)">
+        <el-table-column v-if="col.type !== 'text' " v-bind="getColBind(col)">
           <template slot-scope="scope">
             <!-- 动态绑定组建 -->
             <component
@@ -152,13 +117,13 @@ const tableComponents = {
 }
 
 export default {
-  name: 'Tables',
+  name: 'VTable',
   components: {},
   props: {
     offset:{
       type:Number,
       default: 60,
-    },
+    },// 表格距离下边距
     data: {
       type: Array,
       default: []
@@ -168,18 +133,7 @@ export default {
       default: []
     }, // 列表头
     columnType: [String, Array], // 列类型[序号、复选框、展开]
-    select: {
-      type: Function,
-      default: () => {}
-    }, // 单个 复选框 事件
-    selectAll: {
-      type: Function,
-      default: () => {}
-    }, // 全选 复选框 事件
-    sortChange: {
-      type: Function,
-      default: () => {}
-    }, // 服务端排序；当 sortable：custom
+    
     pageSizes: {
       type: Array,
       default: () => [50, 100, 500, 1000]
@@ -197,8 +151,6 @@ export default {
       default: 0
     }, // 总数
     pagination: Boolean, // 分页开关
-    showSummary: Boolean, // 表尾合计行开关
-    summaryMethod: Function // 表尾合计行方法
   },
   data() {
     return {
@@ -230,7 +182,7 @@ export default {
       const map = Object.assign({}, COLUMN_KEY_MAP)
       /* 循环列，将列的各属性合并 */
       const renderColumns = columns.map(col => {
-        const props = !col.columnsProps ? COLUMN_PROPS : col.columnsProps // 列的属性 默认为 COLUMN_PROPS
+        const props = Object.assign({},COLUMN_PROPS,col);
         const componentType = !props.type ? 'text' : props.type
         this.$set(props, 'component', tableComponents[componentType])
         this.$set(props, 'type', componentType)
@@ -260,6 +212,16 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      this.resize();
+    })
+  },
+  watch:{
+    offset(){
+      this.resize();
+    } 
+  },
+  methods: {
+    resize(){
       var top = this.$refs.tables.getBoundingClientRect().top
       /* 当 top = 0 的时候 说明还是在隐藏阶段 取缓存数据 */
       if (Number(top) <= 0) {
@@ -268,9 +230,7 @@ export default {
         sessionStorage.setItem('dom-heigth', top)
       }
       this.tab_height = document.body.offsetHeight - Number(Number(top) + this.offset)
-    })
-  },
-  methods: {
+    },
     /* 删除列属性中无效值 -- 打印表头 */
     getColBind(col) {
       const bind = Object.assign({}, col)

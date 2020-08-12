@@ -1,19 +1,27 @@
 <template>
-  <el-select v-model="val" v-bind="selectProps" @change="valChange" >
-    <el-option v-for="item in dsItems" v-bind="item" :key="item.value" ></el-option>
-  </el-select>
+  <el-radio-group v-bind="groupProps" @change="valChange" v-model="val">
+    <template v-for="(item, index) in dsItems">
+      <el-radio-button v-if="type == 'button'" v-bind="item" :key="index">{{item.name}}</el-radio-button>
+      <el-radio v-else :key="index" v-bind="item">{{item.name}}</el-radio>
+    </template>
+  </el-radio-group>
 </template>
 
 <script>
 /**
- * 下拉选择
+ * 单选框
+ * - type:  button || radio
  * - change
  * - value
  * - dataSource:[] 数据字典
  */
 export default {
-  name: "Select",
+  name: "VRadio",
   props: {
+    type: {
+      type: String,
+      default: "radio"
+    },
     change: {
       type: Function,
       default: () => {}
@@ -37,29 +45,28 @@ export default {
   computed: {
     dsItems() {
       return this.dataSource.map(item => ({
-        label: item.name,
-        name: item.value,
-        value: item.value
+        label: item.value,
+        name: item.name
+        // value: item.value
         // ...item
       }));
     },
-    selectProps() {
+    groupProps() {
       const { dataSource, type, value, change, ...other } = this.$attrs;
       return other;
     }
   },
   methods: {
     valChange(label) {
-      const values = Array.isArray(label)?label:[label];
       this.$emit(
         "change",
         label,
-        this.dataSource.filter(i =>values.some(v=>v==i.value))
+        this.dataSource.filter(i => i.value == label)
       );
       console.log(
         "change",
         label,
-        this.dataSource.filter(i =>values.some(v=>v==i.value))
+        this.dataSource.filter(i => i.value == label)
       );
       this.$emit("input", label);
     }

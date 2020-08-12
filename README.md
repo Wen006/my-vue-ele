@@ -5,7 +5,7 @@
 ```bash
 # 克隆项目
 git clone https://github.com/Wen006/my-vue-ele.git
-// or git clone https://gitee.com/W006/my-vue-ele.git
+# or git clone https://gitee.com/W006/my-vue-ele.git
 
 # 进入项目目录
 cd my-vue-ele

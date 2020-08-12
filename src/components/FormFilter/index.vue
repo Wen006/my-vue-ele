@@ -23,6 +23,7 @@
           <el-form-item
             :label="colItem.itemProps.label"
             :v-bind="getFormItemProps(colItem.itemProps)"
+            @keyup.enter.native="searchClick"
           >
             <search-btn
               v-if="colItem.isBtn"
@@ -87,7 +88,7 @@ export default {
     // 是否开启高级查询
     advance: {
       type: Boolean,
-      default: true
+      default: false
     },
     formItems: {
       type: Array
@@ -104,7 +105,6 @@ export default {
     };
   },
   created() {
-    console.log("PLUGINS", PLUGINS);
   },
   computed: {
     inputItemProps(itemProps) {
@@ -207,6 +207,10 @@ export default {
     searchClick() {
       console.log("formValues", this.formValues);
       this.$emit("on-submit", this.formValues);
+    },
+    // 获取参数值
+    getFormVal(){
+      return this.formValues;
     },
     // 重置按钮
     resetClick() {

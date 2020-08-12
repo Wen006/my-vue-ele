@@ -1,6 +1,7 @@
 <template>
     <div class="table-form-page">
-        <form-filter advance :formItems="formItems" @on-submit="submit"></form-filter>
+        <form-filter advance :formItems="formItems" @on-submit="submit">
+        </form-filter>
         <data-table columnType="selection" ref="demoTable" :columns="columns" :fetchData="fetchData"></data-table>
     </div>
 </template>
@@ -83,12 +84,7 @@ export default {
             return "日期： " + cellValue;
           }
         }
-      ].map(i => {
-        return {
-          //   ...i,
-          columnsProps: i
-        };
-      })
+      ]
     };
   },
   created() {},

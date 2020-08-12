@@ -1,6 +1,6 @@
 <template>
     <div class="demo-main">
-        <btn active v-for="(item, index) in btns" :key="index" @click="page=item.key" >{{item.name}}-演示</btn>
+        <btn :type="item.key == page?'primary':''" v-for="(item, index) in btns" :key="index" @click="page=item.key" >{{item.name}}-演示</btn>
         <hr />
         <component
          :is="page"
@@ -13,6 +13,7 @@ import ComList from "./list";
 import ComButton from "./button";
 import ComForm from "./form";
 import LookUp from "./lookup";
+import TableDame from './list/TableDame'
 
 import Btn from '@/components/Btn'
 
@@ -24,6 +25,7 @@ export default {
     ComButton,
     ComForm,
     LookUp,
+    TableDame,
     Btn
   },
   data() {
@@ -33,12 +35,13 @@ export default {
         {ComButton:"按钮"},
         {ComForm:"表单"},
         {LookUp:"弹框选择"},
+        {TableDame:"Table"},
       ],
-      page:"ComList"
+      page:"ComForm"
     };
   },
   created() {
-    console.log('this', this)
+    
   },
   methods: {
     
