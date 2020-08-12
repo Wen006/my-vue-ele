@@ -1,14 +1,16 @@
 ## 开发
 
+
+
 ```bash
 # 克隆项目
-git clone https://gitee.com/y_project/RuoYi-Vue
+git clone https://github.com/Wen006/my-vue-ele.git
 
 # 进入项目目录
-cd ruoyi-ui
+cd my-vue-ele
 
-# 安装依赖
-npm install
+# 安装依赖 or cnpm install
+npm install   
 
 # 建议不要直接使用 cnpm 安装依赖，会有各种诡异的 bug。可以通过如下操作解决 npm 下载速度慢的问题
 npm install --registry=https://registry.npm.taobao.org
@@ -17,7 +19,7 @@ npm install --registry=https://registry.npm.taobao.org
 npm run dev
 ```
 
-浏览器访问 http://localhost:80
+浏览器访问 http://127.0.0.1:1024
 
 ## 新功能实现
 
@@ -25,6 +27,8 @@ npm run dev
 -  mock
 -  组件
 -  模块
+
+
 
 ## 发布
 
