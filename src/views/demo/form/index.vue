@@ -49,8 +49,9 @@ export default {
   },
   computed: {},
   methods: {
-    valChange(value, row) {
-      console.log("value,row", value, row);
+    /**回调 */
+    valChange(values, rows) {
+      console.log("values,rows", values, rows);
     }
   }
 };

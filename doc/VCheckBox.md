@@ -1,14 +1,18 @@
 ---
-name: v-table
+name: v-check-box
 ---
 
 [TOC]
 
-# 下拉选择VSelect
+# 下拉选择VCheckbox
 
-基于el-select封装
+基于el-checkbox封装
 
-- 数据生成下拉
+单选直接用官网的
+
+- 多选
+
+- datasource 数据字典
 
   
 
@@ -20,23 +24,25 @@ name: v-table
 
 ```vue
 <template>
-  <div>
-    <v-select v-model="selectVal" :dataSource="dataSource"></v-select>
-    <v-select multiple v-model="selectVals" :dataSource="dataSource"></v-select>
+  <div> 
+    <v-check-box v-model="boxVal" :dataSource="dataSource"></v-check-box>
+    <v-check-box v-model="boxVal" :dataSource="dataSource" type="button"></v-check-box>
   </div>
 </template>
-<script>
-import VSelect from "@/components/FormMark/VSelect";
+
+
+<script> 
+import VCheckBox from "@/components/FormMark/VCheckBox"; 
+
 export default {
-  name: "Demo",
-  components: {
-    VSelect
+  name: "FormDemo",
+  components: { 
+    VCheckBox, 
   },
   props: {},
   data() {
     return {
-      selectVal: "",
-      selectVals: [],
+      boxVal: ["1"],
       dataSource: [
         { name: "篮球", value: "1" },
         { name: "足球", value: "2" },
@@ -45,7 +51,12 @@ export default {
     };
   },
   computed: {},
-  methods: {}
+  methods: {
+    /**回调 */
+    valChange(values, rows) {
+      console.log("values,rows", values, rows);
+    }
+  }
 };
 </script>
 
@@ -57,7 +68,7 @@ export default {
 ### 引入方式
 
 ```javascript
-import VSelect from "@/components/FormMark/VSelect";
+import VCheckBox from "@/components/FormMark/VCheckBox"; 
 ```
 
 ### 组件使用
@@ -67,22 +78,23 @@ import VSelect from "@/components/FormMark/VSelect";
 > 直接写到标签上 
 >
 > ```js
-> <v-table :columns="[]" />
+> <v-check-box v-model="boxVal"></v-check-box>
 > ```
 
-| 参数       | 说明                  | 类型  | 默认值 |
-| ---------- | --------------------- | ----- | ------ |
-| dataSource | 列属性>查看官网       | Array | -      |
-| value      | 值                    | Array | -      |
-| 其他       | element 官网el-select |       | -      |
+| 参数          | 说明                                    | 类型   | 默认值 |
+| ------------- | --------------------------------------- | ------ | ------ |
+| dataSource    | 每个选择向属性 【数据字典+el-item属性】 | Array  | -      |
+| value/v-modal | 值                                      | Array  | -      |
+| type          | 类型 button｜box                        | String | box    |
+| 其他          | element 官网el-checkbox-group           |        | -      |
 
 ##### dataSource
 
-| 属性  | 说明                          | 类型   |
-| ----- | ----------------------------- | ------ |
-| name  | 标签显示名称                  | String |
-| value | 属性值                        | String |
-| 其他  | element 官网el-select-options | String |
+| 属性  | 说明                                        | 类型   |
+| ----- | ------------------------------------------- | ------ |
+| name  | 标签显示名称                                | String |
+| value | 属性值                                      | String |
+| 其他  | element 官网el-checkbox-button\|el-checkbox | String |
 
 #### 方法
 
@@ -102,7 +114,7 @@ import VSelect from "@/components/FormMark/VSelect";
 >当属性传入 其他事件可以参考element官网
 >
 >```js
-><v-table @change="change" />
+><v-check-box @change="change" />
 >```
 
 | 名称   | 参数          | 说明                        | 默认 |

@@ -1,16 +1,16 @@
 ---
-name: v-table
+name: v-radio
 ---
 
 [TOC]
 
-# 下拉选择VSelect
+# 单择VRadio
 
-基于el-select封装
+基于el-radio封装
 
-- 数据生成下拉
-
-  
+- radio
+- button
+- json schema
 
 ### 使用场景
 
@@ -21,22 +21,23 @@ name: v-table
 ```vue
 <template>
   <div>
-    <v-select v-model="selectVal" :dataSource="dataSource"></v-select>
-    <v-select multiple v-model="selectVals" :dataSource="dataSource"></v-select>
+    <v-radio v-model="value" :dataSource="dataSource" @change="valChange"></v-radio>
+    <v-radio type="button" v-model="value" :dataSource="dataSource" @change="valChange"></v-radio>
   </div>
 </template>
+
 <script>
-import VSelect from "@/components/FormMark/VSelect";
+import VRadio from "@/components/FormMark/VRadio";
+  
 export default {
-  name: "Demo",
+  name: "FormDemo",
   components: {
-    VSelect
+    VRadio
   },
   props: {},
   data() {
     return {
-      selectVal: "",
-      selectVals: [],
+      value: "1",
       dataSource: [
         { name: "篮球", value: "1" },
         { name: "足球", value: "2" },
@@ -45,7 +46,12 @@ export default {
     };
   },
   computed: {},
-  methods: {}
+  methods: {
+    /**回调 */
+    valChange(values, rows) {
+      console.log("values,rows", values, rows);
+    }
+  }
 };
 </script>
 
@@ -57,7 +63,7 @@ export default {
 ### 引入方式
 
 ```javascript
-import VSelect from "@/components/FormMark/VSelect";
+import VRadio from "@/components/FormMark/VRadio";
 ```
 
 ### 组件使用
@@ -67,22 +73,23 @@ import VSelect from "@/components/FormMark/VSelect";
 > 直接写到标签上 
 >
 > ```js
-> <v-table :columns="[]" />
+> <v-radio v-model="value" />
 > ```
 
-| 参数       | 说明                  | 类型  | 默认值 |
-| ---------- | --------------------- | ----- | ------ |
-| dataSource | 列属性>查看官网       | Array | -      |
-| value      | 值                    | Array | -      |
-| 其他       | element 官网el-select |       | -      |
+| 参数          | 说明                                    | 类型   | 默认值 |
+| ------------- | --------------------------------------- | ------ | ------ |
+| dataSource    | 每个选择向属性 【数据字典+el-item属性】 | Array  | -      |
+| value/v-modal | 值                                      | Array  | -      |
+| type          | 类型 button｜radio                      | String | radio  |
+| 其他          | element 官网el-radio-group              |        | -      |
 
 ##### dataSource
 
-| 属性  | 说明                          | 类型   |
-| ----- | ----------------------------- | ------ |
-| name  | 标签显示名称                  | String |
-| value | 属性值                        | String |
-| 其他  | element 官网el-select-options | String |
+| 属性  | 说明                                  | 类型           |
+| ----- | ------------------------------------- | -------------- |
+| name  | 标签显示名称                          | String         |
+| value | 属性值                                | String         |
+| 其他  | element 官网el-radio-button｜el-radio | el-radioString |
 
 #### 方法
 
@@ -102,7 +109,7 @@ import VSelect from "@/components/FormMark/VSelect";
 >当属性传入 其他事件可以参考element官网
 >
 >```js
-><v-table @change="change" />
+><v-radio @change="change" />
 >```
 
 | 名称   | 参数          | 说明                        | 默认 |

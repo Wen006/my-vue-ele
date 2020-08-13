@@ -1,5 +1,5 @@
 ---
-name: v-table
+name: v-select
 ---
 
 [TOC]
@@ -70,11 +70,11 @@ import VSelect from "@/components/FormMark/VSelect";
 > <v-table :columns="[]" />
 > ```
 
-| 参数       | 说明                  | 类型  | 默认值 |
-| ---------- | --------------------- | ----- | ------ |
-| dataSource | 列属性>查看官网       | Array | -      |
-| value      | 值                    | Array | -      |
-| 其他       | element 官网el-select |       | -      |
+| 参数          | 说明                                    | 类型  | 默认值 |
+| ------------- | --------------------------------------- | ----- | ------ |
+| dataSource    | 每个选择向属性 【数据字典+el-item属性】 | Array | -      |
+| value/v-modal | 值                                      | Array | -      |
+| 其他          | element 官网el-select                   |       | -      |
 
 ##### dataSource
 

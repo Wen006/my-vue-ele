@@ -37,7 +37,7 @@ export default {
         {LookUp:"弹框选择"},
         {TableDame:"Table"},
       ],
-      page:"ComForm"
+      page:"ComButton"
     };
   },
   created() {
